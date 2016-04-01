@@ -4,6 +4,7 @@ cakephp-contact is here to help you save, test and display all locality and cont
 It is compatible with CakePHP 3 only.
 
 - [Installation](#installing-with-composer)
+    - [Configuration](#configuration)
 - [Usage](#usage)
     - [Validation](#validation)
     - [Entity](#entity-saving-data)
@@ -18,15 +19,51 @@ You can install it using this [Composer](http://getcomposer.org) command in the 
 composer require erwane/cakephp-contact
 ```
 
-### CakePHP
-
-Modify the `Controller/AppController.php` to include this at the top of class.
-
 ```php
+# In config/bootstrap.php
+Plugin::load('Contact', ['bootstrap' => true]);
+```
+
+If you need Helper:
+```php
+# In Controller/AppController.php
 public $helpers = [
     'Contact' => [ 'className' => 'Contact.Contact' ],
 ];
 ```
+
+## Configuration
+By default, the EntityTrait treat this fields as "phone fields"
+- phone
+- tel
+- telephone
+- mobile
+- mobile_phone
+- landing_line
+- portable
+
+You can add or override those fields by configuring the plugin
+```php
+# In config/app.php
+    /*
+     * Contact Plugin.
+     */
+    'Contact' => [
+        'fields' => [
+            'mergePolicy' => 'exclusive',
+            'phone' => [ 'tel', 'customer_phone' ],
+        ]
+    ],
+```
+
+Available options:
+<pre>
+Contact.fields.mergePolicy (string):
+'merge' (default): Add your fields to default fields
+'exclusive': Use only your fields
+
+Contact.fields.phone (array): The fields name you want be treated as phone
+</pre>
 
 # Usage
 
@@ -42,17 +79,6 @@ class UserEntity extends Entity
     use \Contact\Model\Entity\ContactEntityTrait;
 ```
 
-Now, all "phone" fields will be formated as international format before saved.
-Phone fields are variant of that fieldname:
-
-- phone
-- tel
-- telephone
-- mobile
-- mobile_phone
-- landing_line
-- portable
-
 
 ## Views
 You can format a phone number in a relly simple manner;
@@ -60,3 +86,5 @@ You can format a phone number in a relly simple manner;
 ```php
 echo $this->Contact->phone($entity->phone);
 ```
+
+
