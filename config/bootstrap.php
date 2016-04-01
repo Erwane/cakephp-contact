@@ -17,8 +17,6 @@ $defaultFields = [
 
 $fields = $defaultFields;
 
-debug(Configure::read('Contact'));
-
 if (!empty(Configure::read('Contact.fields')))
 {
     if (Configure::read('Contact.fields.mergePolicy') === 'exclusive')
@@ -32,6 +30,3 @@ if (!empty(Configure::read('Contact.fields')))
 }
 
 Configure::write('Contact.fields', $fields);
-
-debug(Configure::read('Contact'));
-exit;

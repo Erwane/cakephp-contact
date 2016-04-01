@@ -4,26 +4,18 @@ namespace Contact\Model\Entity;
 
 use Cake\Utility\Inflector;
 use Contact\Utility\Phone;
+use Cake\Core\Configure;
 
 trait ContactEntityTrait
 {
 
-    private $_fieldsName = [
-        'phones' => [
-            'phone',
-            'tel',
-            'telephone',
-            'mobile',
-            'mobile_phone',
-            'landing_line',
-            'portable',
-        ],
-    ];
+    private $_fieldsName = [];
 
     private $_fields = [];
 
     public function __construct(array $properties = [], array $options = [])
     {
+        $this->_fieldsName = Configure::read('Contact.fields');
         return parent::__construct($properties, $options);
     }
 
@@ -56,18 +48,18 @@ trait ContactEntityTrait
 
     protected function propertyIsPhone($property)
     {
-        if (empty($this->_fields['phones']))
+        if (empty($this->_fields['phone']))
         {
             $this->__setPhoneKeys();
         }
 
-        return array_search($property, $this->_fields['phones']);
+        return array_search($property, $this->_fields['phone']);
     }
 
     private function __setPhoneKeys()
     {
         $keys = [];
-        foreach ($this->_fieldsName['phones'] as $key) {
+        foreach ($this->_fieldsName['phone'] as $key) {
             $inflectored = [
                 Inflector::camelize($key),
                 Inflector::dasherize($key),
@@ -88,6 +80,6 @@ trait ContactEntityTrait
             }
         }
 
-        $this->_fields['phones'] = $keys;
+        $this->_fields['phone'] = $keys;
     }
 }
