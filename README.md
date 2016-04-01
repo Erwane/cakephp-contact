@@ -11,7 +11,8 @@ It is compatible with CakePHP 3 only.
 
 # Installing with Composer
 
-You can install this package via Composer by running this command in your terminal in the root of your project:
+The package is available on [Packagist](https://packagist.org/packages/erwane/cakephp-contact).
+You can install it using this [Composer](http://getcomposer.org) command in the root of your project:
 
 ```bash
 composer require erwane/cakephp-contact
