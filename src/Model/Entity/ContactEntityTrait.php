@@ -21,6 +21,8 @@ trait ContactEntityTrait
 
     public function set($property, $value = null, array $options = [])
     {
+
+        // convert into array
         $isString = is_string($property);
         if ($isString && $property !== '') {
             $p = [$property => $value];
@@ -38,7 +40,18 @@ trait ContactEntityTrait
             }
         }
 
-        return parent::set($p, null, $options);
+        // revert to same format
+        if ($isString)
+        {
+            $property = $k;
+            $value = $v;
+        }
+        else
+        {
+            $property = $p;
+        }
+
+        return parent::set($property, $value, $options);
     }
 
     public function __setPhone($phone)
