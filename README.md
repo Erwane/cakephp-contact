@@ -32,11 +32,30 @@ public $helpers = [
 ## Validation
 
 ## Entity (saving data)
+You can format your phone information by using ContactEntityTrait in your Entity.
+Just add this line after your Entity declaration:
+```php
+class UserEntity extends Entity
+{
+    # add this to use ContactEntityTrait
+    use \Contact\Model\Entity\ContactEntityTrait;
+```
+
+Now, all "phone" fields will be formated as international format before saved.
+Phone fields are variant of that fieldname:
+
+- phone
+- tel
+- telephone
+- mobile
+- mobile_phone
+- landing_line
+- portable
+
 
 ## Views
-You can format a phone number realy simply:
+You can format a phone number in a relly simple manner;
 
 ```php
 echo $this->Contact->phone($entity->phone);
 ```
-
