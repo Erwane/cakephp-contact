@@ -1,0 +1,22 @@
+{
+    "name": "erwane/cakephp-contact",
+    "description": "Cakephp plugin for manipulating Contact information (address, phone, ...)",
+    "type": "cakephp-plugin",
+    "keywords": ["cakephp", "contact", "phone", "address"],
+    "license": "MIT",
+    "require": {
+        "giggsey/libphonenumber-for-php": "7.*"
+    },
+    "authors": [
+        {
+            "name": "Erwane Breton",
+            "email": "erwane@phea.fr"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Contact\\": "src"
+        }
+    },
+    "minimum-stability": "beta"
+}
