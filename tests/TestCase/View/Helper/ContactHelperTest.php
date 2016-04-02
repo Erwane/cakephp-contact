@@ -2,9 +2,9 @@
 
 namespace Contact\Test\TestCase\View\Helper;
 
-use Contact\View\Helper\ContactHelper;
 use Cake\TestSuite\TestCase;
 use Cake\View\View;
+use Contact\View\Helper\ContactHelper;
 
 class ContactHelperTest extends TestCase
 {

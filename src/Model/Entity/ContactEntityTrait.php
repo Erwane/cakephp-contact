@@ -2,9 +2,9 @@
 
 namespace Contact\Model\Entity;
 
+use Cake\Core\Configure;
 use Cake\Utility\Inflector;
 use Contact\Utility\Phone;
-use Cake\Core\Configure;
 
 trait ContactEntityTrait
 {
@@ -13,62 +13,75 @@ trait ContactEntityTrait
 
     private $_fields = [];
 
+    /**
+     * @param array $properties Entity properties
+     * @param array $options Entity options
+     * @return parent::__construct
+     */
     public function __construct(array $properties = [], array $options = [])
     {
         $this->_fieldsName = Configure::read('Contact.fields');
         return parent::__construct($properties, $options);
     }
 
+    /**
+     * @param array $property to set
+     * @param [value] $value property (or options)
+     * @param array $options set
+     * @return parent
+     */
     public function set($property, $value = null, array $options = [])
     {
-
         // convert into array
         $isString = is_string($property);
         if ($isString && $property !== '') {
             $p = [$property => $value];
-        }
-        else
-        {
+        } else {
             $p = $property;
         }
 
-        foreach($p as $k => &$v)
-        {
-            if ($this->propertyIsPhone($k))
-            {
+        foreach ($p as $k => &$v) {
+            if ($this->propertyIsPhone($k)) {
                 $v = $this->__setPhone($v);
             }
         }
 
         // revert to same format
-        if ($isString)
-        {
+        if ($isString) {
             $property = $k;
             $value = $v;
-        }
-        else
-        {
+        } else {
             $property = $p;
         }
 
         return parent::set($property, $value, $options);
     }
 
+    /**
+     * @param  string $phone number
+     * @return string formated phone
+     */
     public function __setPhone($phone)
     {
         return Phone::format($phone, ['format' => 'short']);
     }
 
+    /**
+     * @param  string $property name
+     * @return bool
+     */
     protected function propertyIsPhone($property)
     {
-        if (empty($this->_fields['phone']))
-        {
+        if (empty($this->_fields['phone'])) {
             $this->__setPhoneKeys();
         }
 
         return array_search($property, $this->_fields['phone']);
     }
 
+    /**
+     * @return void
+     */
     private function __setPhoneKeys()
     {
         $keys = [];
@@ -80,8 +93,7 @@ trait ContactEntityTrait
                 Inflector::variable($key),
             ];
 
-            foreach ($inflectored as $field)
-            {
+            foreach ($inflectored as $field) {
                 // Default Version
                 $keys[$field] = $field;
 

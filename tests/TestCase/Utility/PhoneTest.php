@@ -2,8 +2,8 @@
 
 namespace Contact\Test\TestCase\Utility;
 
-use Contact\Utility\Phone;
 use Cake\TestSuite\TestCase;
+use Contact\Utility\Phone;
 
 class PhoneTest extends TestCase
 {

@@ -7,8 +7,13 @@ use Contact\Utility\Phone;
 
 class ContactHelper extends Helper
 {
-    public function phone($text, $options = [])
+    /**
+     * @param  string $phone number
+     * @param  array $options args
+     * @return formated phone
+     */
+    public function phone($phone, $options = [])
     {
-        return Phone::format($text, $options);
+        return Phone::format($phone, $options);
     }
 }
