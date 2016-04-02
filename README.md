@@ -1,5 +1,9 @@
-# cakephp-contact
-cakephp-contact is here to help you save, test and display all locality and contact datas like phone & address.
+# CakePHP 3.x plugin to manipulate contact data
+===============================================
+
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE) [![Travis](https://img.shields.io/travis/Erwane/cakephp-contact.svg?style=flat-square)](https://travis-ci.org/Erwane/cakephp-contact)
+
+CakePHP-Contact is here to help you save, test and display all locality and contact datas like phone & address.
 
 It is compatible with CakePHP 3 only.
 
@@ -86,5 +90,3 @@ You can format a phone number in a relly simple manner;
 ```php
 echo $this->Contact->phone($entity->phone);
 ```
-
-
