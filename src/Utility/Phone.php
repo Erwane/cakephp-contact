@@ -7,6 +7,13 @@ use libphonenumber\PhoneNumberFormat;
 
 class Phone {
 
+    protected static $formats = [
+        'international' => PhoneNumberFormat::INTERNATIONAL,
+        'national' => PhoneNumberFormat::NATIONAL,
+        'uri' => PhoneNumberFormat::RFC3966,
+        'short' => PhoneNumberFormat::E164,
+    ];
+
     /**
         format phone number :
         @options [
@@ -19,13 +26,6 @@ class Phone {
 
         if ((string) $text !== '')
         {
-            $formats = [
-                'international' => PhoneNumberFormat::INTERNATIONAL,
-                'national' => PhoneNumberFormat::NATIONAL,
-                'uri' => PhoneNumberFormat::RFC3966,
-                'short' => PhoneNumberFormat::E164,
-            ];
-
             $options = array_merge([
                 'country' => 'FR',
                 'format' => 'international',
@@ -34,7 +34,7 @@ class Phone {
             $LibPhone = PhoneNumberUtil::getInstance();
 
             $phone = $LibPhone->parse((string) $text, $options['country']);
-            $text = $LibPhone->format($phone, $formats[$options['format']]);
+            $text = $LibPhone->format($phone, self::$formats[$options['format']]);
         }
 
         return $text;

@@ -18,5 +18,10 @@
             "Contact\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Contact\\Test\\": "tests"
+        }
+    },
     "minimum-stability": "beta"
 }
