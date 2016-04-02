@@ -4,24 +4,32 @@
     "type": "cakephp-plugin",
     "keywords": ["cakephp", "contact", "phone", "address"],
     "license": "MIT",
-    "require": {
-        "giggsey/libphonenumber-for-php": "7.*"
-    },
     "authors": [
         {
             "name": "Erwane Breton",
             "email": "erwane@phea.fr"
         }
     ],
+
+    "require": {
+        "giggsey/libphonenumber-for-php": "7.*"
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "5.3.*"
+    },
+
     "autoload": {
         "psr-4": {
             "Contact\\": "src"
         }
     },
+
     "autoload-dev": {
         "psr-4": {
             "Contact\\Test\\": "tests"
         }
     },
+
     "minimum-stability": "beta"
 }
