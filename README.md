@@ -1,7 +1,7 @@
 # CakePHP 3.x plugin to manipulate contact data
 ===============================================
 
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE) [![Travis](https://img.shields.io/travis/Erwane/cakephp-contact.svg?style=flat-square)](https://travis-ci.org/Erwane/cakephp-contact)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE) [![Travis](https://img.shields.io/travis/Erwane/cakephp-contact.svg?style=flat-square)](https://travis-ci.org/Erwane/cakephp-contact) [![Coverage Status](https://img.shields.io/codecov/c/github/Erwane/cakephp-contact.svg?style=flat-square)](https://codecov.io/github/Erwane/cakephp-contact)
 
 CakePHP-Contact is here to help you save, test and display all locality and contact datas like phone & address.
 
