@@ -35,7 +35,7 @@ trait ContactEntityTrait
         ],
     ];
 
-    private $address = [
+    private $_addressAry = [
         'organization' => '',
         'street1' => '',
         'street2' => '',
@@ -52,7 +52,7 @@ trait ContactEntityTrait
         ],
     ];
 
-    private $_addressFormat = ":organization\n:street1\n:street2\n:postalCode :city\n:country";
+    private $_addressFormat = ":organization\n:street1\n:street2\n:postalCode :locality\n:country";
 
     private $_fieldsName = [];
     private $_fields = [];
@@ -219,7 +219,7 @@ trait ContactEntityTrait
             return [];
         }
 
-        $address = $this->address;
+        $address = $this->_addressAry;
 
         $hasData = false;
         // parse fieldsname to find address data
