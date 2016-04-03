@@ -33,11 +33,13 @@ trait ContactEntityTrait
     public function __construct(array $properties = [], array $options = [])
     {
         $this->setFields();
+        parent::__construct($properties, $options);
     }
 
     /**
      * Define which fields are formated
      * @param array $options [description]
+     * @return void
      */
     public function setFields($options = [])
     {
