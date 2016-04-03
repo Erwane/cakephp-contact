@@ -2,6 +2,7 @@
 
 namespace Contact\Test\TestCase\Model\Entity;
 
+use Cake\Core\Configure;
 use Cake\TestSuite\TestCase;
 
 class ContactEntityTest extends TestCase
@@ -14,6 +15,10 @@ class ContactEntityTest extends TestCase
         parent::setUp();
         $this->Entity = new ContactEntityMock();
     }
+
+    /*
+        Phone Tests
+     */
 
     public function testSetPhone()
     {
@@ -60,4 +65,117 @@ class ContactEntityTest extends TestCase
         $this->assertEquals('+33123456789', $this->Entity->mobile);
         $this->assertEquals('01.23.45.67.89', $this->Entity->telephone_client);
     }
+
+    /*
+        Address Tests
+     */
+
+    public function testFullAddressDefault()
+    {
+        $this->Entity->set([
+            'title' => 'Erwane Breton',
+            'address1' => "123 rue de la liberté",
+            'address2' => "Arrière cours",
+            'postcode' => '01234',
+            'city' => 'St Jean des corbières',
+            'country' => new ContactEntityMock(['id' => 1, 'title' => 'France']),
+        ]);
+
+        $address = $this->Entity->address_full;
+
+        $this->assertEquals("Erwane Breton", $address['organization']);
+        $this->assertEquals("123 rue de la liberté", $address['street1']);
+        $this->assertEquals("Arrière cours", $address['street2']);
+        $this->assertEquals("01234", $address['postalCode']);
+        $this->assertEquals("St Jean des corbières", $address['city']);
+        $this->assertEquals("France", $address['country']);
+
+        $this->assertCount(5, $address['microformat']);
+        $this->assertEquals("St Jean des corbières", $address['microformat']['addressLocality']);
+    }
+
+    public function testFullAddressCustom()
+    {
+        $this->Entity->setFields(['address' => [
+            'organization' => 'NomSociete',
+            'address1' => 'AdresseSociete',
+            'address2' => 'ComplementAdresse',
+            'postcode' => 'CodePostal',
+            'city' => 'Ville',
+            'region' => 'Region',
+            'country' => 'Pays',
+        ]]);
+
+        $this->Entity->set([
+            'AdresseSociete' => "123 rue de la liberté",
+            'ComplementAdresse' => "Arrière cours",
+            'CodePostal' => '01234',
+            'Ville' => 'Seattle',
+            'Region' => "WA",
+            'Pays' => "USA",
+        ]);
+
+        $address = $this->Entity->address_full;
+
+        $this->assertEquals("123 rue de la liberté", $address['street1']);
+        $this->assertEquals("Arrière cours", $address['street2']);
+        $this->assertEquals("01234", $address['postalCode']);
+        $this->assertEquals("Seattle", $address['city']);
+        $this->assertEquals("WA", $address['region']);
+        $this->assertEquals("USA", $address['country']);
+
+        $this->assertCount(5, $address['microformat']);
+        $this->assertEquals("Seattle", $address['microformat']['addressLocality']);
+    }
+
+    public function testNoAddressData()
+    {
+        $result = $this->Entity->address_full;
+        $this->assertCount(0, $result);
+    }
+
+    public function testNoAddressField()
+    {
+        $this->Entity->setFields(['exclusive' => true, 'phone' => ['tel']]);
+        $result = $this->Entity->address_full;
+        $this->assertCount(0, $result);
+    }
+
+    public function testTextAddressDefault()
+    {
+        $this->Entity->set([
+            'title' => 'Erwane Breton',
+            'address1' => "123 rue de la liberté",
+            'address2' => "Arrière cours",
+            'postcode' => '01234',
+            'city' => 'St Jean des corbières',
+            'country' => new ContactEntityMock(['id' => 1, 'title' => 'France']),
+        ]);
+
+        $this->assertEquals("Erwane Breton\n123 rue de la liberté\nArrière cours\n01234 St Jean des corbières\nFrance", $this->Entity->address_text);
+    }
+
+    public function testTextAddressCustom()
+    {
+        $this->Entity->set([
+            'title' => 'Erwane Breton',
+            'address1' => "123 rue de la liberté",
+            'address2' => "Arrière cours",
+            'postcode' => '01234',
+            'city' => 'St Jean des corbières',
+            'country' => new ContactEntityMock(['id' => 1, 'title' => 'France']),
+        ]);
+
+        $this->Entity->setAddressFormat(":street1 :street2\n:city :postalCode\n:region :country");
+
+        $this->assertEquals("123 rue de la liberté Arrière cours\nSt Jean des corbières 01234\n France", $this->Entity->address_text);
+    }
+
+    public function testNoAddressFormat()
+    {
+        Configure::delete('Contact.addressFormat');
+        $result = $this->Entity->setAddressFormat();
+        $this->assertFalse($result);
+    }
+
 }

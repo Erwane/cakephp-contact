@@ -5,6 +5,7 @@ namespace Contact\Model\Entity;
 use Cake\Core\Configure;
 use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
+use Cake\Utility\Text;
 use Contact\Utility\Phone;
 
 trait ContactEntityTrait
@@ -20,7 +21,38 @@ trait ContactEntityTrait
             'landing_line',
             'portable',
         ],
+
+        // Address fields.
+        // You can define an external model by using Tables.fieldname . Pluralized table name
+        'address' => [
+            'organization' => 'title',
+            'address1' => 'address1',
+            'address2' => 'address2',
+            'postcode' => 'postcode',
+            'city' => 'city',
+            'region' => 'Regions.title', // Pluralized table name
+            'country' => 'Countries.title', // Pluralized table name
+        ],
     ];
+
+    private $address = [
+        'organization' => '',
+        'street1' => '',
+        'street2' => '',
+        'city' => '',
+        'postalCode' => '',
+        'region' => '',
+        'country' => '',
+        'microformat' => [
+            'streetAddress' => '',
+            'postalCode' => '',
+            'addressLocality' => '',
+            'addressRegion' => '',
+            'addressCountry' => '',
+        ],
+    ];
+
+    private $_addressFormat = ":organization\n:street1\n:street2\n:postalCode :city\n:country";
 
     private $_fieldsName = [];
     private $_fields = [];
@@ -33,6 +65,7 @@ trait ContactEntityTrait
     public function __construct(array $properties = [], array $options = [])
     {
         $this->setFields();
+        $this->setAddressFormat();
         parent::__construct($properties, $options);
     }
 
@@ -56,6 +89,17 @@ trait ContactEntityTrait
         }
 
         $this->_fieldsName = $newFields;
+    }
+
+    public function setAddressFormat($format = null)
+    {
+        if (is_string($format) && strpos($format, ':') !== false) {
+            return $this->_addressFormat = $format;
+        } elseif (Configure::read('Contact.addressFormat') !== null) {
+            return $this->_addressFormat = Configure::read('Contact.addressFormat');
+        }
+
+        return false;
     }
 
     /**
@@ -140,5 +184,98 @@ trait ContactEntityTrait
         }
 
         $this->_fields['phone'] = $keys;
+    }
+
+    /**
+     * Get the formatted address of an entity.
+     * @param  array or int $input data
+     *         (array)$input: try to format those inputs datas
+     *         (int)$input: get this Model address
+     * @return [type]         [description]
+    public function getAddress($input = null)
+    {
+
+    }
+    */
+
+    /**
+     * Get the address in text format
+     * @param  string $separator used for fields
+     * @return string
+     */
+    public function _getAddressText($separator = "\n")
+    {
+        return Text::insert($this->_addressFormat, $this->address_full);
+    }
+
+    /**
+     * Accessor trying to format address based on entity datas. If no address data, set to [].
+     * address_full set to array or empty array if no data
+     */
+    public function _getAddressFull()
+    {
+        if (empty($this) || empty($this->_fieldsName['address']))
+        {
+            return [];
+        }
+
+        $address = $this->address;
+
+        $hasData = false;
+        // parse fieldsname to find address data
+        foreach ($this->_fieldsName['address'] as $k => $field)
+        {
+            $value = null;
+            if (strpos($field, '.') !== false) {
+                list($entity, $field) = explode('.', $field);
+                $association = Inflector::underscore(Inflector::singularize($entity));
+                if ($this->$association instanceof \Cake\Datasource\EntityInterface) {
+                    $value = $this->$association->$field;
+                }
+            } else {
+                $value = $this->$field;
+            }
+            if ($value != '') {
+                $hasData = true;
+            }
+
+            // Affect data to right key
+            switch($k)
+            {
+                case 'organization':
+                    $address['organization'] = $value;
+                    break;
+                case 'address1':
+                    $address['street1'] = $value;
+                    $address['microformat']['streetAddress'] .= $value;
+                    break;
+                case 'address2':
+                    $address['street2'] = $value;
+                    $address['microformat']['streetAddress'] .= $address['microformat']['streetAddress'] == '' ?: PHP_EOL . $value;
+                    break;
+                case 'city':
+                    $address['city'] = $value;
+                    $address['microformat']['addressLocality'] = $value;
+                    break;
+                case 'postcode':
+                    $address['postalCode'] = $value;
+                    $address['microformat']['postalCode'] = $value;
+                    break;
+                case 'region':
+                    $address['region'] = $value;
+                    $address['microformat']['addressRegion'] = $value;
+                    break;
+                case 'country':
+                    $address['country'] = $value;
+                    $address['microformat']['addressCountry'] = $value;
+                    break;
+            }
+        }
+
+        if (!$hasData) {
+            $address = [];
+        }
+
+        return $address;
     }
 }
