@@ -67,4 +67,4 @@ Cache::config([
 ini_set('intl.default_locale', 'fr_FR');
 
 
-Configure::write('Contact.addressFormat', ":organization\n:street1\n:street2\n:postalCode :city\n:country");
+Configure::write('Contact.addressFormat', ":organization\n:street1\n:street2\n:postalCode :locality\n:country");

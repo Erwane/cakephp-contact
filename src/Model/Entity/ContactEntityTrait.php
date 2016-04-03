@@ -25,11 +25,11 @@ trait ContactEntityTrait
         // Address fields.
         // You can define an external model by using Tables.fieldname . Pluralized table name
         'address' => [
-            'organization' => 'title',
-            'address1' => 'address1',
-            'address2' => 'address2',
-            'postcode' => 'postcode',
-            'city' => 'city',
+            'organization' => 'organization',
+            'street1' => 'street1',
+            'street2' => 'street2',
+            'postalCode' => 'postalCode',
+            'locality' => 'locality',
             'region' => 'Regions.title', // Pluralized table name
             'country' => 'Countries.title', // Pluralized table name
         ],
@@ -39,7 +39,7 @@ trait ContactEntityTrait
         'organization' => '',
         'street1' => '',
         'street2' => '',
-        'city' => '',
+        'locality' => '',
         'postalCode' => '',
         'region' => '',
         'country' => '',
@@ -245,19 +245,19 @@ trait ContactEntityTrait
                 case 'organization':
                     $address['organization'] = $value;
                     break;
-                case 'address1':
+                case 'street1':
                     $address['street1'] = $value;
                     $address['microformat']['streetAddress'] .= $value;
                     break;
-                case 'address2':
+                case 'street2':
                     $address['street2'] = $value;
                     $address['microformat']['streetAddress'] .= $address['microformat']['streetAddress'] == '' ?: PHP_EOL . $value;
                     break;
-                case 'city':
-                    $address['city'] = $value;
+                case 'locality':
+                    $address['locality'] = $value;
                     $address['microformat']['addressLocality'] = $value;
                     break;
-                case 'postcode':
+                case 'postalCode':
                     $address['postalCode'] = $value;
                     $address['microformat']['postalCode'] = $value;
                     break;

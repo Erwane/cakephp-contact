@@ -73,11 +73,11 @@ class ContactEntityTest extends TestCase
     public function testFullAddressDefault()
     {
         $this->Entity->set([
-            'title' => 'Erwane Breton',
-            'address1' => "123 rue de la liberté",
-            'address2' => "Arrière cours",
-            'postcode' => '01234',
-            'city' => 'St Jean des corbières',
+            'organization' => 'Erwane Breton',
+            'street1' => "123 rue de la liberté",
+            'street2' => "Arrière cours",
+            'postalCode' => '01234',
+            'locality' => 'St Jean des corbières',
             'country' => new ContactEntityMock(['id' => 1, 'title' => 'France']),
         ]);
 
@@ -87,7 +87,7 @@ class ContactEntityTest extends TestCase
         $this->assertEquals("123 rue de la liberté", $address['street1']);
         $this->assertEquals("Arrière cours", $address['street2']);
         $this->assertEquals("01234", $address['postalCode']);
-        $this->assertEquals("St Jean des corbières", $address['city']);
+        $this->assertEquals("St Jean des corbières", $address['locality']);
         $this->assertEquals("France", $address['country']);
 
         $this->assertCount(5, $address['microformat']);
@@ -98,10 +98,10 @@ class ContactEntityTest extends TestCase
     {
         $this->Entity->setFields(['address' => [
             'organization' => 'NomSociete',
-            'address1' => 'AdresseSociete',
-            'address2' => 'ComplementAdresse',
-            'postcode' => 'CodePostal',
-            'city' => 'Ville',
+            'street1' => 'AdresseSociete',
+            'street2' => 'ComplementAdresse',
+            'postalCode' => 'CodePostal',
+            'locality' => 'Ville',
             'region' => 'Region',
             'country' => 'Pays',
         ]]);
@@ -120,7 +120,7 @@ class ContactEntityTest extends TestCase
         $this->assertEquals("123 rue de la liberté", $address['street1']);
         $this->assertEquals("Arrière cours", $address['street2']);
         $this->assertEquals("01234", $address['postalCode']);
-        $this->assertEquals("Seattle", $address['city']);
+        $this->assertEquals("Seattle", $address['locality']);
         $this->assertEquals("WA", $address['region']);
         $this->assertEquals("USA", $address['country']);
 
@@ -144,11 +144,11 @@ class ContactEntityTest extends TestCase
     public function testTextAddressDefault()
     {
         $this->Entity->set([
-            'title' => 'Erwane Breton',
-            'address1' => "123 rue de la liberté",
-            'address2' => "Arrière cours",
-            'postcode' => '01234',
-            'city' => 'St Jean des corbières',
+            'organization' => 'Erwane Breton',
+            'street1' => "123 rue de la liberté",
+            'street2' => "Arrière cours",
+            'postalCode' => '01234',
+            'locality' => 'St Jean des corbières',
             'country' => new ContactEntityMock(['id' => 1, 'title' => 'France']),
         ]);
 
@@ -158,15 +158,15 @@ class ContactEntityTest extends TestCase
     public function testTextAddressCustom()
     {
         $this->Entity->set([
-            'title' => 'Erwane Breton',
-            'address1' => "123 rue de la liberté",
-            'address2' => "Arrière cours",
-            'postcode' => '01234',
-            'city' => 'St Jean des corbières',
+            'organization' => 'Erwane Breton',
+            'street1' => "123 rue de la liberté",
+            'street2' => "Arrière cours",
+            'postalCode' => '01234',
+            'locality' => 'St Jean des corbières',
             'country' => new ContactEntityMock(['id' => 1, 'title' => 'France']),
         ]);
 
-        $this->Entity->setAddressFormat(":street1 :street2\n:city :postalCode\n:region :country");
+        $this->Entity->setAddressFormat(":street1 :street2\n:locality :postalCode\n:region :country");
 
         $this->assertEquals("123 rue de la liberté Arrière cours\nSt Jean des corbières 01234\n France", $this->Entity->address_text);
     }
