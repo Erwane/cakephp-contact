@@ -35,6 +35,8 @@ define('LOGS', TMP);
 @mkdir(CACHE . 'models');
 
 require_once CORE_PATH . 'config/bootstrap.php';
+require_once ROOT . 'config/bootstrap.php';
+
 date_default_timezone_set('UTC');
 mb_internal_encoding('UTF-8');
 

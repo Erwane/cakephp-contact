@@ -3,14 +3,26 @@
 namespace Contact\Model\Entity;
 
 use Cake\Core\Configure;
+use Cake\Utility\Hash;
 use Cake\Utility\Inflector;
 use Contact\Utility\Phone;
 
 trait ContactEntityTrait
 {
 
-    private $_fieldsName = [];
+    private $_defaultFields = [
+        'phone' => [
+            'phone',
+            'tel',
+            'telephone',
+            'mobile',
+            'mobile_phone',
+            'landing_line',
+            'portable',
+        ],
+    ];
 
+    private $_fieldsName = [];
     private $_fields = [];
 
     /**
@@ -20,8 +32,28 @@ trait ContactEntityTrait
      */
     public function __construct(array $properties = [], array $options = [])
     {
-        $this->_fieldsName = Configure::read('Contact.fields');
-        return parent::__construct($properties, $options);
+        $this->setFields();
+    }
+
+    /**
+     * Define which fields are formated
+     * @param array $options [description]
+     */
+    public function setFields($options = [])
+    {
+        $fields = !empty($options) ? $options : Configure::read('Contact.fields');
+
+        $newFields = $this->_defaultFields;
+
+        if (!empty($fields)) {
+            if (!empty($fields['exclusive'])) {
+                $newFields = $fields;
+            } else {
+                $newFields = Hash::merge($this->_defaultFields, $fields);
+            }
+        }
+
+        $this->_fieldsName = $newFields;
     }
 
     /**

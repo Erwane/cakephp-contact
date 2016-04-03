@@ -54,7 +54,7 @@ You can add or override those fields by configuring the plugin
      */
     'Contact' => [
         'fields' => [
-            'mergePolicy' => 'exclusive',
+            'exclusive' => true,
             'phone' => [ 'tel', 'customer_phone' ],
         ]
     ],
@@ -62,9 +62,9 @@ You can add or override those fields by configuring the plugin
 
 Available options:
 <pre>
-Contact.fields.mergePolicy (string):
-'merge' (default): Add your fields to default fields
-'exclusive': Use only your fields
+Contact.fields.exclusive (boolean):
+false (default): Add your fields to default fields
+true: Use only your fields
 
 Contact.fields.phone (array): The fields name you want be treated as phone
 </pre>
