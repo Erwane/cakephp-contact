@@ -13,7 +13,6 @@
 
     "require": {
         "cakephp/cakephp": ">=3.2.0",
-        "commerceguys/addressing": "0.8.*",
         "giggsey/libphonenumber-for-php": "7.*"
     },
 
