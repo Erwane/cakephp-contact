@@ -93,6 +93,8 @@ You can add or override those fields by configuring the plugin
 
 ## Validation
 
+(todo)
+
 ## Entity
 You can add 3 really easy to use contact manipulation by using ContactEntityTrait in your Entity file
 ```php
