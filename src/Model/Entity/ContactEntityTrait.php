@@ -198,6 +198,16 @@ trait ContactEntityTrait
     }
     */
 
+   /**
+     * Get the fullname (firstname + lastname)
+     * @return string
+     */
+    public function _getFullname()
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+
     /**
      * Get the address in text format
      * @param  string $separator used for fields
