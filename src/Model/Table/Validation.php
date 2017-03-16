@@ -7,8 +7,12 @@ class Validation
 {
     public static function phoneNumber($check, $context)
     {
-        $phoneNumberUtil = PhoneNumberUtil::getInstance();
-        $phoneNumberObject = $phoneNumberUtil->parse($check, 'FR');
-        return $phoneNumberUtil->isValidNumber($phoneNumberObject);
+        $Util = PhoneNumberUtil::getInstance();
+        try {
+            $Number = $Util->parse($check, 'FR');
+            return $Util->isValidNumber($Number);
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }
