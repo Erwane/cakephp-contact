@@ -27,7 +27,7 @@ class Phone
      */
     public static function format($text, $options = [])
     {
-        if ((string)$text !== '') {
+        if ($text !== '') {
             $options = array_merge(
                 [
                 'country' => 'FR',
@@ -38,8 +38,12 @@ class Phone
 
             $LibPhone = PhoneNumberUtil::getInstance();
 
-            $phone = $LibPhone->parse((string)$text, $options['country']);
-            $text = $LibPhone->format($phone, self::$formats[$options['format']]);
+            if ($LibPhone->isViablePhoneNumber($text)) {
+                $phone = $LibPhone->parse($text, $options['country']);
+                $text = $LibPhone->format($phone, self::$formats[$options['format']]);
+            } else {
+                $text = '';
+            }
         }
 
         return $text;
