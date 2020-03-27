@@ -1,3 +1,2 @@
 <?php
-
-use Cake\Core\Configure;
+// do nothing

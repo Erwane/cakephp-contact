@@ -20,7 +20,8 @@
         "cakephp/cakephp-codesniffer": "^4.0",
         "php-parallel-lint/php-parallel-lint": "^1.1",
         "phpro/grumphp": "^0.18",
-        "phpunit/phpunit": "^8.5"
+        "phpunit/phpunit": "^8.5",
+        "symfony/var-dumper": "^5.0"
     },
 
     "autoload": {

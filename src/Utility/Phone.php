@@ -1,14 +1,15 @@
 <?php
+declare(strict_types=1);
 
 namespace Contact\Utility;
 
+use InvalidArgumentException;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
 
 class Phone
 {
-
-    protected static $formats = [
+    protected static $_formats = [
         'international' => PhoneNumberFormat::INTERNATIONAL,
         'national' => PhoneNumberFormat::NATIONAL,
         'uri' => PhoneNumberFormat::RFC3966,
@@ -20,30 +21,29 @@ class Phone
      *
      * @param  string $text    phone number
      * @param  array  $options [ 'country' => 'FR', 'format' => 'international', ]
-     *      'country' => 'FR',
-     *      'format' => 'international',
-     *  ]
-     * @return formatted phone number
+     * @return string|null Formated phone number
      */
-    public static function format($text, $options = [])
+    public static function format(?string $text = null, array $options = []): ?string
     {
-        if ($text !== '') {
-            $options = array_merge(
-                [
-                'country' => 'FR',
-                'format' => 'international',
-                ],
-                $options
-            );
+        if (empty($text)) {
+            return null;
+        }
 
-            $LibPhone = PhoneNumberUtil::getInstance();
+        $options += [
+            'country' => 'FR',
+            'format' => 'international',
+        ];
 
-            if ($LibPhone->isViablePhoneNumber($text)) {
-                $phone = $LibPhone->parse($text, $options['country']);
-                $text = $LibPhone->format($phone, self::$formats[$options['format']]);
-            } else {
-                $text = '';
-            }
+        if (!array_key_exists($options['format'], static::$_formats)) {
+            throw new InvalidArgumentException("format should be short|uri|national|international");
+        }
+
+        $phoneNumberUtil = PhoneNumberUtil::getInstance();
+
+        if ($phoneNumberUtil->isViablePhoneNumber($text)) {
+            $phone = $phoneNumberUtil->parse($text, $options['country']);
+
+            return $phoneNumberUtil->format($phone, static::$_formats[$options['format']]);
         }
 
         return $text;

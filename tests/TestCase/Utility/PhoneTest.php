@@ -1,27 +1,59 @@
 <?php
+declare(strict_types=1);
 
 namespace Contact\Test\TestCase\Utility;
 
 use Cake\TestSuite\TestCase;
 use Contact\Utility\Phone;
+use InvalidArgumentException;
 
 class PhoneTest extends TestCase
 {
-    public function testPhoneFormatFr()
+    /**
+     * @test
+     */
+    public function noPhone()
     {
-        $country = 'FR';
-        $this->assertEquals('+33 1 23 45 67 89', Phone::format('01.23.45.67.89', ['country' => $country]));
-        $this->assertEquals('01 23 45 67 89', Phone::format('01.23.45.67.89', ['format' => 'national', 'country' => $country]));
-        $this->assertEquals('tel:+33-1-23-45-67-89', Phone::format('01.23.45.67.89', ['format' => 'uri', 'country' => $country]));
-        $this->assertEquals('+33123456789', Phone::format('01.23.45.67.89', ['format' => 'short', 'country' => $country]));
+        self::assertNull(Phone::format(null));
+        self::assertNull(Phone::format(''));
     }
 
-    public function testPhoneFormatEn()
+    /**
+     * @test
+     */
+    public function notPhoneNumber()
     {
-        $country = 'GB';
-        $this->assertEquals('+44 7795 841283', Phone::format('07-795-841-283', ['country' => $country]));
-        $this->assertEquals('07795 841283', Phone::format('07-795-841-283', ['format' => 'national', 'country' => $country]));
-        $this->assertEquals('tel:+44-7795-841283', Phone::format('07-795-841-283', ['format' => 'uri', 'country' => $country]));
-        $this->assertEquals('+447795841283', Phone::format('07-795-841-283', ['format' => 'short', 'country' => $country]));
+        self::assertSame('testing', Phone::format('testing'));
+    }
+
+    /**
+     * @test
+     */
+    public function invalidFormat()
+    {
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessage('format should be short|uri|national|international');
+        Phone::format('testing', ['format' => 'testing']);
+    }
+
+    /**
+     * @test
+     */
+    public function phoneFormatNoOptions()
+    {
+        $phone = Phone::format('01.23.45.67.89');
+        self::assertEquals('+33 1 23 45 67 89', $phone);
+    }
+
+    /**
+     * @test
+     */
+    public function phoneFormatOptions()
+    {
+        $phone = Phone::format('07-795-841-283', ['country' => 'GB']);
+        self::assertSame('+44 7795 841283', $phone);
+
+        $phone = Phone::format('0123456789', ['format' => 'uri']);
+        self::assertSame('tel:+33-1-23-45-67-89', $phone);
     }
 }
