@@ -12,13 +12,15 @@
     ],
 
     "require": {
-        "cakephp/cakephp": ">=3.2.0",
-        "giggsey/libphonenumber-for-php": "7.*"
+        "cakephp/cakephp": "^4",
+        "giggsey/libphonenumber-for-php": "^8.0"
     },
 
     "require-dev": {
-        "phpunit/phpunit": "5.3.*",
-        "cakephp/cakephp-codesniffer": "dev-master"
+        "cakephp/cakephp-codesniffer": "^4.0",
+        "php-parallel-lint/php-parallel-lint": "^1.1",
+        "phpro/grumphp": "^0.18",
+        "phpunit/phpunit": "^8.5"
     },
 
     "autoload": {
@@ -33,5 +35,11 @@
         }
     },
 
-    "minimum-stability": "beta"
+    "scripts": {
+        "cscheck": "phpcs -p src/ tests/",
+        "csfix": "phpcbf -p src/ tests/"
+    },
+
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

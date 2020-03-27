@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset name="AgendaTrad">
+    <arg name="colors"/>
+    <arg name="warning-severity=0"/>
+
+    <config name="installed_paths" value="../../cakephp/cakephp-codesniffer" />
+
+    <rule ref="CakePHP" />
+</ruleset>
