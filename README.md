@@ -1,11 +1,13 @@
-# CakePHP 3.x plugin to manipulate contact data
+
+# CakePHP 4.x plugin to manipulate contact data
 ===============================================
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE) [![Travis](https://img.shields.io/travis/Erwane/cakephp-contact.svg?style=flat-square)](https://travis-ci.org/Erwane/cakephp-contact)
 
 CakePHP-Contact is here to help you save, test and display all locality and contact datas like phone & address.
 
-It is compatible with CakePHP 3 only.
+It is compatible with CakePHP 4 only.
+For Cakephp3 compatibility, use 1.x versions
 
 - [Installation](#installing-with-composer)
     - [Configuration](#configuration)
@@ -14,105 +16,124 @@ It is compatible with CakePHP 3 only.
     - [Entity](#entity-saving-data)
     - [Views](#views)
 
-# Installing with Composer
+## Installing with Composer
 
-The package is available on [Packagist](https://packagist.org/packages/erwane/cakephp-contact).
-You can install it using this [Composer](http://getcomposer.org) command in the root of your project:
-
+Use composer to install it
 ```bash
 composer require erwane/cakephp-contact
 ```
 
+## Utility
+
+**Contact\Utility\Phone::format**(?string $text = null, array $options = [])
+
+`$text` is string or null
+`$options` is an array with this possible options and output
+* `country` : a country code like `FR` or `UK`
+* `format` :
+        * `international`: +33 1 23 45 67 89
+        * `national`: 01 23 45 67 89
+        * `uri`: tel:+33-1-23-45-67-89
+        * `short`: +33123456789
+
+
+## PhoneNumberType
+The phone number database type automatically format request data to an E164 phone number (+33....)
+It also format phone number from unformated database result.
+
+### How to use PhoneNumberType
+
 ```php
-# In config/bootstrap.php
-Plugin::load('Contact', ['bootstrap' => true]);
-```
+// in src/Application.php
+use Cake\Core\Exception\MissingPluginException;
 
-If you need Helper:
-```php
-# In Controller/AppController.php
-public $helpers = [
-    'Contact' => [ 'className' => 'Contact.Contact' ],
-];
-```
+public function bootstrap(): void
+{
+    // Load Contact plugin
+    try {
+        $this->addPlugin(\Contact\Plugin::class);
+    } catch (MissingPluginException $e) {
+        debug($e->getMessage());
+    }
+}
 
-## Configuration
-By default, the EntityTrait treat this fields as:
+// in table file
+use Cake\Database\Schema\TableSchemaInterface;
+use Cake\Orm\Table;
 
-**Phone**
-```sql
-`phone`, `tel`, `telephone`, `mobile`, `mobile_phone`, `landing_line`, `portable`
-```
-
-**Address part**
-```sql
-`organization`, `street1`, `street2`, `postalCode`, `locality`, `region`, `country`
-```
-
-**Address format**
-The address_text virtual field is formated by a string:
-<pre>
-:organization\n:street1\n:street2\n:postalCode :locality\n:country
-</pre>
-
-You can add or override those fields by configuring the plugin
-```php
-# In config/app.php
-    /*
-     * Contact Plugin.
+class UsersTable extends Table
+    /**
+     * {@inheritDoc}
      */
-    'Contact' => [
-        // Address text format
-        'addressFormat' => ":organization\n:street1 :street2\n:postalCode :locality\n:country"
+    protected function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface
+    {
+        $schema->setColumnType('phone_number', 'phonenumber')
+            ->setColumnType('mobile_number', 'phonenumber');
 
-        // Fields options
-        'fields' => [
-            // exclusive set to true override default configuration instead of merging.
-            'exclusive' => true,
-
-            // phone fields
-            'phone' => [ 'tel', 'customer_phone' ],
-
-            // address fields binding
-            'address' => [
-                // 'key' => 'myFieldName',
-                'organization' => 'title',
-                'street1' => 'Adresse',
-                'street2' => 'ComplementAdresse',
-                'postalCode' => 'CodePostal',
-                'locality' => 'Commune',
-                // You can fetch field from another table if exists
-                'region' => 'Regions.title',
-                'country' => 'Countries.title',
-            ],
-        ],
-    ],
+        return $schema;
+    }
 ```
 
-# Usage
+### Default country
+Phone number in forms are set in the user country format, like `0123456789` for France. But there can be conflict, depends of the user Country who fill the form.
+You can set `defaultCountry` for all phone number not set in international format.
+
+```php
+// in config/bootstrap.php
+// or after loaded user preference or website country
+use Cake\Database\TypeFactory;
+use Contact\Database\Type\PhoneNumberType;
+
+$phoneNumberType = new PhoneNumberType();
+$phoneNumberType->setDefaultCountry('BE');
+TypeFactory::set('phonenumber', $phoneNumberType);
+```
+Now, all non international form phone numbers was formated with +32 prefix
+
 
 ## Validation
 
-(todo)
-
-## Entity
-You can add 3 really easy to use contact manipulation by using ContactEntityTrait in your Entity file
+Contact plugin provide a simple phone number validation rule
 ```php
-class User extends Entity
+// in validation method
+
+public function validationDefault(Validator $validator)
 {
-    # add this to use ContactEntityTrait
-    use \Contact\Model\Entity\ContactEntityTrait;
+    $validator->setProvider('contact', 'Contact\Validation\ContactValidation');
+    $validator->add('phone_number', [
+        'number' => [
+            'provider' => 'contact',
+            'rule' => ['phone'],
+        ],
+    ]);
+}
+
+// You can pass country argument
+$validator->add('phone_number', [
+    'number' => [
+        'provider' => 'contact',
+        'rule' => ['phone', 'ES'],
+    ],
+]);
 ```
 
-Your phone fields will be formated before save.
+## View Helper
 
-You can access two new Entity property :
-- \$entity->address_full : formated array of entity address + google microformat
-- \$entity->address_text : string formated of entity address (configurable)
-
-## Views
 You can format a phone number in a really simple manner;
 
 ```php
-echo $this->Contact->phone($entity->phone);
+// In src/AppView.php
+public function initialize(): void
+{
+    $this->loadHelper('Contact.Contact');
+}
+
+// in template file
+echo $this->Contact->phone($entity->phone_number);
+
+// Can pass options (see Utility/Phone::format() help)
+echo $this->Contact->phone($entity->phone_number, [
+    'country' => 'BE',
+    'format' => 'uri',
+]);
 ```

@@ -85,4 +85,14 @@ class PhoneNumberType extends StringType
 
         return $value;
     }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return bool True as database results should be formated
+     */
+    public function requiresToPhpCast(): bool
+    {
+        return true;
+    }
 }
