@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Contact\Test\TestCase\View\Helper;
 
@@ -8,30 +9,26 @@ use Contact\View\Helper\ContactHelper;
 
 class ContactHelperTest extends TestCase
 {
-    public $helper = null;
+    private $helper = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
-        $View = new View();
-        $this->helper = new ContactHelper($View);
+        $this->helper = new ContactHelper(new View());
     }
 
-    public function testPhoneFr()
+    public function tearDown(): void
     {
-        $country = 'FR';
-        $this->assertEquals('+33 1 23 45 67 89', $this->helper->phone('01.23.45.67.89', ['country' => $country]));
-        $this->assertEquals('01 23 45 67 89', $this->helper->phone('01.23.45.67.89', ['format' => 'national', 'country' => $country]));
-        $this->assertEquals('tel:+33-1-23-45-67-89', $this->helper->phone('01.23.45.67.89', ['format' => 'uri', 'country' => $country]));
-        $this->assertEquals('+33123456789', $this->helper->phone('01.23.45.67.89', ['format' => 'short', 'country' => $country]));
+        parent::tearDown();
+        $this->helper = null;
     }
 
-    public function testPhoneGb()
+    /**
+     * @test
+     */
+    public function phone()
     {
-        $country = 'GB';
-        $this->assertEquals('+44 7795 841283', $this->helper->phone('07-795-841-283', ['country' => $country]));
-        $this->assertEquals('07795 841283', $this->helper->phone('07-795-841-283', ['format' => 'national', 'country' => $country]));
-        $this->assertEquals('tel:+44-7795-841283', $this->helper->phone('07-795-841-283', ['format' => 'uri', 'country' => $country]));
-        $this->assertEquals('+447795841283', $this->helper->phone('07-795-841-283', ['format' => 'short', 'country' => $country]));
+        $output = $this->helper->phone('07-795-841-283', ['country' => 'GB', 'format' => 'short']);
+        self::assertSame('+447795841283', $output);
     }
 }
