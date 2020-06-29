@@ -78,9 +78,13 @@ class PhoneNumberType extends StringType
     {
         $phoneNumberUtil = PhoneNumberUtil::getInstance();
         if ($phoneNumberUtil->isViablePhoneNumber($value)) {
-            $phone = $phoneNumberUtil->parse($value, $this->defaultCountry);
+            try {
+                $phone = $phoneNumberUtil->parse($value, $this->defaultCountry);
 
-            return $phoneNumberUtil->format($phone, PhoneNumberFormat::E164);
+                return $phoneNumberUtil->format($phone, PhoneNumberFormat::E164);
+            } catch (\Exception $e) {
+                return $value;
+            }
         }
 
         return $value;
