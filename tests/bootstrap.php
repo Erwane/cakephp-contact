@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 
+use Cake\Core\ClassLoader;
 use Cake\Core\Configure;
 
 // use Cake\Datasource\ConnectionManager;
@@ -25,7 +26,7 @@ define('CONFIG', APP . 'config' . DS);
 define('CACHE', TMP);
 define('LOGS', TMP);
 
-$loader = new \Cake\Core\ClassLoader();
+$loader = new ClassLoader();
 $loader->register();
 
 $loader->addNamespace('TestApp', APP);

@@ -7,21 +7,29 @@
     "authors": [
         {
             "name": "Erwane Breton",
-            "email": "erwane@phea.fr"
+            "email": "erwane@phea.fr",
+            "homepage": "https://erwane-breton.fr",
+            "role": "Developer"
         }
     ],
 
+    "support": {
+        "issues": "https://github.com/Erwane/cakephp-contact/issues",
+        "source": "https://github.com/Erwane/cakephp-contact",
+        "docs": "https://github.com/Erwane/cakephp-contact/blob/master/README.md"
+    },
+
     "require": {
-        "cakephp/cakephp": "^4",
-        "giggsey/libphonenumber-for-php": "^8.0"
+        "php": ">=7.2.0",
+        "cakephp/cakephp": "^4.0",
+        "giggsey/libphonenumber-for-php": "^8.12"
     },
 
     "require-dev": {
         "cakephp/cakephp-codesniffer": "^4.0",
         "php-parallel-lint/php-parallel-lint": "^1.1",
-        "phpro/grumphp": "^0.18",
-        "phpunit/phpunit": "^8.5",
-        "symfony/var-dumper": "^5.0"
+        "phpro/grumphp": "^1.3",
+        "phpunit/phpunit": "^9.5"
     },
 
     "autoload": {
@@ -41,6 +49,6 @@
         "csfix": "phpcbf -p src/ tests/"
     },
 
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }

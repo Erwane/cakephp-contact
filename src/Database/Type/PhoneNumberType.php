@@ -8,6 +8,11 @@ use Cake\Database\Type\StringType;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
 
+/**
+ * Class PhoneNumberType
+ *
+ * @package Contact\Database\Type
+ */
 class PhoneNumberType extends StringType
 {
     /**
@@ -22,7 +27,7 @@ class PhoneNumberType extends StringType
     /**
      * Set defaut country type
      *
-     * @param   string $countryCode New defaut country code.
+     * @param  string $countryCode New defaut country code.
      * @return  self
      * @see     https://en.wikipedia.org/wiki/List_of_country_calling_codes
      */
@@ -36,13 +41,16 @@ class PhoneNumberType extends StringType
     /**
      * Convert string data into phone number international
      *
-     * @param mixed $value The value to convert.
-     * @param \Cake\Database\DriverInterface $driver The driver instance to convert with.
+     * @param  mixed $value The value to convert.
+     * @param  \Cake\Database\DriverInterface $driver The driver instance to convert with.
      * @return string|null
+     * @throws \libphonenumber\NumberParseException
      */
     public function toDatabase($value, DriverInterface $driver): ?string
     {
-        if (!is_string($value)) {
+        $value = parent::toDatabase($value, $driver);
+
+        if ($value === null) {
             return null;
         }
 
@@ -52,13 +60,17 @@ class PhoneNumberType extends StringType
     /**
      * Convert string values to PHP strings.
      *
-     * @param mixed $value The value to convert.
-     * @param \Cake\Database\DriverInterface $driver The driver instance to convert with.
+     * @param  mixed $value The value to convert.
+     * @param  \Cake\Database\DriverInterface $driver The driver instance to convert with.
      * @return string|null
+     * @throws \libphonenumber\NumberParseException
+     * @throws \libphonenumber\NumberParseException
      */
     public function toPHP($value, DriverInterface $driver): ?string
     {
-        if (!is_string($value)) {
+        $value = parent::toPHP($value, $driver);
+
+        if ($value === null) {
             return null;
         }
 
@@ -71,29 +83,26 @@ class PhoneNumberType extends StringType
 
     /**
      * Format phone number in international short format
+     *
      * @param  string $value [description]
-     * @return [type]        [description]
+     * @return string
+     * @throws \libphonenumber\NumberParseException
+     * @throws \libphonenumber\NumberParseException
      */
     protected function _formatPhoneNumber(string $value): string
     {
-        $phoneNumberUtil = PhoneNumberUtil::getInstance();
-        if ($phoneNumberUtil->isViablePhoneNumber($value)) {
-            try {
-                $phone = $phoneNumberUtil->parse($value, $this->defaultCountry);
+        if (PhoneNumberUtil::isViablePhoneNumber($value)) {
+            $instance = PhoneNumberUtil::getInstance();
+            $phone = $instance->parse($value, $this->defaultCountry);
 
-                return $phoneNumberUtil->format($phone, PhoneNumberFormat::E164);
-            } catch (\Exception $e) {
-                return $value;
-            }
+            return $instance->format($phone, PhoneNumberFormat::E164);
         }
 
         return $value;
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @return bool True as database results should be formated
+     * @inheritDoc
      */
     public function requiresToPhpCast(): bool
     {

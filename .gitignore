@@ -1,7 +1,7 @@
 # User specific & automatically generated files #
 #################################################
 /composer.lock
-/phpunit.xml
+/phpunit.xml.dist
 /vendor
 
 # OS generated files #

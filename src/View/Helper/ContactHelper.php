@@ -6,16 +6,22 @@ namespace Contact\View\Helper;
 use Cake\View\Helper;
 use Contact\Utility\Phone;
 
+/**
+ * Class ContactHelper
+ *
+ * @package Contact\View\Helper
+ */
 class ContactHelper extends Helper
 {
     /**
      * Convenient method to format phone number
      *
-     * @param  string $text    Phone number
-     * @param  array  $options [ 'country' => 'FR', 'format' => 'international', ]
+     * @param  string|null $phone Phone number
+     * @param  array $options [ 'country' => 'FR', 'format' => 'international', ]
      * @return string|null Formated phone number
+     * @throws \libphonenumber\NumberParseException
      */
-    public function phone($phone, array $options = []): ?string
+    public function phone(?string $phone, array $options = []): ?string
     {
         return Phone::format($phone, $options);
     }

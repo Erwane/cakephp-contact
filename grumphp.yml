@@ -1,16 +1,11 @@
-parameters:
-    git_dir: .
-    bin_dir: vendor/bin
-    ascii:
-        failed: ~
-        succeeded: ~
-    tasks:
-        phplint: ~
-        phpcs:
-            report: full
-            # standard: CakePHP
-            encoding: UTF-8
-            whitelist_patterns:
-                - /^src\/(.*\.php)/
-                - /^tests\/(.*\.php)/
-                - /^plugins\/src\/(.*\.php)/
+grumphp:
+  ascii:
+    failed: ~
+    succeeded: ~
+  tasks:
+    phplint: ~
+    phpcs:
+      whitelist_patterns:
+        - /^config\/(.*\.php)/
+        - /^src\/(.*\.php)/
+        - /^tests\/(.*\.php)/
