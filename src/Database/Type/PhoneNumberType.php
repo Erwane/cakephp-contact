@@ -5,6 +5,7 @@ namespace Contact\Database\Type;
 
 use Cake\Database\DriverInterface;
 use Cake\Database\Type\StringType;
+use Exception;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
 
@@ -44,7 +45,6 @@ class PhoneNumberType extends StringType
      * @param  mixed $value The value to convert.
      * @param  \Cake\Database\DriverInterface $driver The driver instance to convert with.
      * @return string|null
-     * @throws \libphonenumber\NumberParseException
      */
     public function toDatabase($value, DriverInterface $driver): ?string
     {
@@ -63,8 +63,6 @@ class PhoneNumberType extends StringType
      * @param  mixed $value The value to convert.
      * @param  \Cake\Database\DriverInterface $driver The driver instance to convert with.
      * @return string|null
-     * @throws \libphonenumber\NumberParseException
-     * @throws \libphonenumber\NumberParseException
      */
     public function toPHP($value, DriverInterface $driver): ?string
     {
@@ -86,16 +84,18 @@ class PhoneNumberType extends StringType
      *
      * @param  string $value [description]
      * @return string
-     * @throws \libphonenumber\NumberParseException
-     * @throws \libphonenumber\NumberParseException
      */
     protected function _formatPhoneNumber(string $value): string
     {
         if (PhoneNumberUtil::isViablePhoneNumber($value)) {
             $instance = PhoneNumberUtil::getInstance();
-            $phone = $instance->parse($value, $this->defaultCountry);
+            try {
+                $phone = $instance->parse($value, $this->defaultCountry);
 
-            return $instance->format($phone, PhoneNumberFormat::E164);
+                return $instance->format($phone, PhoneNumberFormat::E164);
+            } catch (Exception $e) {
+                return $value;
+            }
         }
 
         return $value;
