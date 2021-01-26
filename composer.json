@@ -21,6 +21,7 @@
 
     "require": {
         "php": ">=7.2.0",
+        "ext-json": "*",
         "cakephp/cakephp": "^4.0",
         "giggsey/libphonenumber-for-php": "^8.12"
     },
@@ -40,7 +41,8 @@
 
     "autoload-dev": {
         "psr-4": {
-            "Contact\\Test\\": "tests"
+            "Contact\\Test\\": "tests",
+            "Contact\\TestApp\\": "tests/test_app/TestApp/"
         }
     },
 
