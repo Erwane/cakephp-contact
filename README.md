@@ -11,10 +11,13 @@ For Cakephp3 compatibility, use 1.x versions
 
 - [Installation](#installing-with-composer)
     - [Configuration](#configuration)
-- [Usage](#usage)
-    - [Validation](#validation)
-    - [Entity](#entity-saving-data)
-    - [Views](#views)
+- [Phone numbers](#phone-numbers)
+    - [Utility](#utility)
+    - [PhoneNumberType](#phonenumbertype)
+    - [Validation](#phone-number-validation)
+    - [Helper](#phone-helper)
+- [Address](#address-trait)
+    - [Configuration](#address-trait-configuration)
 
 ## Installing with Composer
 
@@ -23,7 +26,9 @@ Use composer to install it
 composer require erwane/cakephp-contact
 ```
 
-## Utility
+## Phone numbers
+
+### Utility
 
 **Contact\Utility\Phone::format**(?string $text = null, array $options = [])
 
@@ -37,11 +42,11 @@ composer require erwane/cakephp-contact
         * `short`: +33123456789
 
 
-## PhoneNumberType
+### PhoneNumberType
 The phone number database type automatically format request data to an E164 phone number (+33....)
 It also format phone number from unformated database result.
 
-### How to use PhoneNumberType
+#### How to use PhoneNumberType
 
 ```php
 // in src/Application.php
@@ -74,7 +79,7 @@ class UsersTable extends Table
     }
 ```
 
-### Default country
+#### Default country
 Phone number in forms are set in the user country format, like `0123456789` for France. But there can be conflict, depends of the user Country who fill the form.
 You can set `defaultCountry` for all phone number not set in international format.
 
@@ -91,7 +96,7 @@ TypeFactory::set('phonenumber', $phoneNumberType);
 Now, all non international form phone numbers was formated with +32 prefix
 
 
-## Validation
+### Phone number validation
 
 Contact plugin provide a simple phone number validation rule
 ```php
@@ -117,7 +122,7 @@ $validator->add('phone_number', [
 ]);
 ```
 
-## View Helper
+### Phone Helper
 
 You can format a phone number in a really simple manner;
 
@@ -136,4 +141,79 @@ echo $this->Contact->phone($entity->phone_number, [
     'country' => 'BE',
     'format' => 'uri',
 ]);
+```
+
+## Address trait
+
+This trait must be attached to `\Cake\ORM\Entity` in your App. It take address data from Entity fields and format it to standard array or string format.
+
+The fields and format can be configured in Entity or by method.
+
+### Default
+
+#### Address fields matching
+
+By default, address will be extracted from this fields :
+```
+// ['key' => 'field name in database']
+[
+    'organization' => 'organization',
+    'street1' => 'street1',
+    'street2' => 'street2',
+    'postalCode' => 'postalCode',
+    'locality' => 'locality',
+    'region' => 'Regions.title', // Pluralized table name
+    'country' => 'Countries.title', // Pluralized table name
+   ]
+```
+Data can be in an associated model. Use dot format `Countries.title` to set it.
+
+#### Address text format
+
+Address text (`$entity->address_text`) use `Cake\Utility\Text::insert()` method to format fields.
+
+Default address text format is :
+```
+":organization
+:street1
+:street2
+:postalCode :locality
+:country"
+```
+
+### Address trait configuration
+
+You can change default configuration in two ways.
+
+#### With methods
+
+```php
+// setAddressFields(array $fields, bool $merge = true)
+$entity->setAddressFields(['organization' => 'name']);
+
+// setAddressFormat(string $format)
+$entity->setAddressFormat(":organization\n:country");
+```
+
+#### In entity
+```php
+use Cake\ORM\Entity;
+use Contact\Model\Entity\AddressTrait;
+
+class Company extends Entity
+{
+    use AddressTrait;
+
+    protected $_addressFields = [
+        'organization' => 'name',
+        'street1' => 'address1',
+        'street2' => 'address2',
+        'postalCode' => 'postal_code',
+        'locality' => 'city',
+        'region' => 'Regions.name',
+        'country' => 'Countries.name',
+    ];
+
+    protected $_addressFormat = ":street1 :street2\n:locality :postalCode\n:region :country";
+}
 ```
