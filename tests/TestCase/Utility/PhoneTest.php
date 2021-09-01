@@ -7,6 +7,10 @@ use Cake\TestSuite\TestCase;
 use Contact\Utility\Phone;
 use InvalidArgumentException;
 
+/**
+ * @uses \Contact\Utility\Phone
+ * @coversDefaultClass \Contact\Utility\Phone
+ */
 class PhoneTest extends TestCase
 {
     /**
@@ -36,24 +40,30 @@ class PhoneTest extends TestCase
         Phone::format('testing', ['format' => 'testing']);
     }
 
-    /**
-     * @test
-     */
-    public function phoneFormatNoOptions()
+    public function dataFormat(): array
     {
-        $phone = Phone::format('01.23.45.67.89');
-        self::assertEquals('+33 1 23 45 67 89', $phone);
+        return [
+            // No options, international
+            ['01.23.45.67.89', [], '+33 1 23 45 67 89'],
+            // GB country
+            ['07-795-841-283', ['country' => 'GB'], '+44 7795 841283'],
+            // URI
+            ['0123456789', ['format' => 'uri'], 'tel:+33-1-23-45-67-89'],
+            // ES number display in international for France
+            ['+34620456789', ['format' => 'national'], '+34 620 45 67 89'],
+            // Uri not affected by international format
+            ['+34620456789', ['format' => 'uri'], 'tel:+34-620-45-67-89'],
+        ];
     }
 
     /**
      * @test
+     * @covers ::format
+     * @dataProvider dataFormat
      */
-    public function phoneFormatOptions()
+    public function testPhoneFormatOptions($source, $options, $expected)
     {
-        $phone = Phone::format('07-795-841-283', ['country' => 'GB']);
-        self::assertSame('+44 7795 841283', $phone);
-
-        $phone = Phone::format('0123456789', ['format' => 'uri']);
-        self::assertSame('tel:+33-1-23-45-67-89', $phone);
+        $phone = Phone::format($source, $options);
+        self::assertSame($expected, $phone);
     }
 }

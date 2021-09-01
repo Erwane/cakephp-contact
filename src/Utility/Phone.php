@@ -48,6 +48,10 @@ class Phone
             $instance = PhoneNumberUtil::getInstance();
             $phone = $instance->parse($text, $options['country']);
 
+            if ($options['format'] == 'national' && $instance->getRegionCodeForNumber($phone) !== $options['country']) {
+                $options['format'] = 'international';
+            }
+
             return $instance->format($phone, static::$_formats[$options['format']]);
         }
 
