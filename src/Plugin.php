@@ -6,7 +6,7 @@ namespace Contact;
 use Cake\Core\BasePlugin;
 
 /**
- * Plugin class for CakePHP 4.x plugin collection.
+ * CakePHP 5 contact plugin.
  */
 class Plugin extends BasePlugin
 {

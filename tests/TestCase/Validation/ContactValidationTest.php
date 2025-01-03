@@ -5,7 +5,14 @@ namespace Contact\Test\TestCase\Validation;
 
 use Cake\TestSuite\TestCase;
 use Contact\Validation\ContactValidation;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
+/**
+ * ContactValidation tests.
+ */
+#[UsesClass(ContactValidation::class)]
+#[CoversClass(ContactValidation::class)]
 class ContactValidationTest extends TestCase
 {
     /**

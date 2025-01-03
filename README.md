@@ -1,13 +1,20 @@
 
-# CakePHP 4.x plugin to manipulate contact data
+# CakePHP 5.x plugin to manipulate contact data
 ===============================================
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE) [![Travis](https://img.shields.io/travis/Erwane/cakephp-contact.svg?style=flat-square)](https://travis-ci.org/Erwane/cakephp-contact)
 
 CakePHP-Contact is here to help you save, test and display all locality and contact datas like phone & address.
 
-It is compatible with CakePHP 4 only.
-For Cakephp3 compatibility, use 1.x versions
+## Version map
+
+| Contact plugin | branch | CakePHP core | PHP min |
+|----------------|--------|--------------|---------|
+| 1.x            | 1.x    | ^3.2         | PHP 7.2 |
+| 2.x            | 2.x    | ^4.0         | PHP 7.2 |
+| 3.x            | 3.x    | ^5.0         | PHP 8.1 |
+
+## Documentation
 
 - [Installation](#installing-with-composer)
     - [Configuration](#configuration)

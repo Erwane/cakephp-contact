@@ -16,8 +16,8 @@ class ContactValidation
     /**
      * Validate a phone with libphonenumber librairy
      *
-     * @param  string $check Input phone number
-     * @param  string $country Country code number
+     * @param string $check Input phone number
+     * @param string $country Country code number
      * @return bool
      */
     public static function phone(string $check, string $country = 'FR'): bool

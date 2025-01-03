@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Contact\Database\Type;
 
-use Cake\Database\DriverInterface;
+use Cake\Database\Driver;
 use Cake\Database\Type\StringType;
 use Exception;
 use libphonenumber\PhoneNumberFormat;
@@ -23,16 +23,16 @@ class PhoneNumberType extends StringType
      *
      * @var string
      */
-    protected $defaultCountry = 'FR';
+    protected string $defaultCountry = 'FR';
 
     /**
      * Set defaut country type
      *
-     * @param  string $countryCode New defaut country code.
-     * @return  self
-     * @see     https://en.wikipedia.org/wiki/List_of_country_calling_codes
+     * @param string $countryCode New defaut country code.
+     * @return $this
+     * @see https://en.wikipedia.org/wiki/List_of_country_calling_codes
      */
-    public function setDefaultCountry(string $countryCode): self
+    public function setDefaultCountry(string $countryCode)
     {
         $this->defaultCountry = $countryCode;
 
@@ -42,11 +42,11 @@ class PhoneNumberType extends StringType
     /**
      * Convert string data into phone number international
      *
-     * @param  mixed $value The value to convert.
-     * @param  \Cake\Database\DriverInterface $driver The driver instance to convert with.
+     * @param mixed $value The value to convert.
+     * @param \Cake\Database\Driver $driver The driver instance to convert with.
      * @return string|null
      */
-    public function toDatabase($value, DriverInterface $driver): ?string
+    public function toDatabase(mixed $value, Driver $driver): ?string
     {
         $value = parent::toDatabase($value, $driver);
 
@@ -60,11 +60,11 @@ class PhoneNumberType extends StringType
     /**
      * Convert string values to PHP strings.
      *
-     * @param  mixed $value The value to convert.
-     * @param  \Cake\Database\DriverInterface $driver The driver instance to convert with.
+     * @param mixed $value The value to convert.
+     * @param \Cake\Database\Driver $driver The driver instance to convert with.
      * @return string|null
      */
-    public function toPHP($value, DriverInterface $driver): ?string
+    public function toPHP(mixed $value, Driver $driver): ?string
     {
         $value = parent::toPHP($value, $driver);
 
@@ -72,7 +72,7 @@ class PhoneNumberType extends StringType
             return null;
         }
 
-        if (strpos($value, '+') === 0) {
+        if (str_starts_with($value, '+')) {
             return $value;
         }
 
@@ -82,7 +82,7 @@ class PhoneNumberType extends StringType
     /**
      * Format phone number in international short format
      *
-     * @param  string $value [description]
+     * @param string $value [description]
      * @return string
      */
     protected function _formatPhoneNumber(string $value): string
@@ -102,7 +102,9 @@ class PhoneNumberType extends StringType
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
+     *
+     * @noinspection PhpMissingParentCallCommonInspection
      */
     public function requiresToPhpCast(): bool
     {

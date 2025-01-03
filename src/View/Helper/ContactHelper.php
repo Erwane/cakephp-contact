@@ -16,8 +16,8 @@ class ContactHelper extends Helper
     /**
      * Convenient method to format phone number
      *
-     * @param  string|null $phone Phone number
-     * @param  array $options [ 'country' => 'FR', 'format' => 'international', ]
+     * @param string|null $phone Phone number
+     * @param array $options [ 'country' => 'FR', 'format' => 'international', ]
      * @return string|null Formated phone number
      * @throws \libphonenumber\NumberParseException
      */

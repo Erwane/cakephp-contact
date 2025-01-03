@@ -14,7 +14,7 @@ use libphonenumber\PhoneNumberUtil;
  */
 class Phone
 {
-    protected static $_formats = [
+    protected static array $_formats = [
         'international' => PhoneNumberFormat::INTERNATIONAL,
         'national' => PhoneNumberFormat::NATIONAL,
         'uri' => PhoneNumberFormat::RFC3966,
@@ -24,8 +24,8 @@ class Phone
     /**
      * format phone number :
      *
-     * @param  string|null $text phone number
-     * @param  array $options [ 'country' => 'FR', 'format' => 'international', ]
+     * @param string|null $text phone number
+     * @param array $options [ 'country' => 'FR', 'format' => 'international', ]
      * @return string|null Formated phone number
      * @throws \libphonenumber\NumberParseException
      */

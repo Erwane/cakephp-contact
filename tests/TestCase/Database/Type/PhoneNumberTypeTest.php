@@ -2,36 +2,36 @@
 declare(strict_types=1);
 
 /**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link          https://cakephp.org CakePHP(tm) Project
- * @since         3.3.0
+ * @copyright     Erwane BRETON <erwane@phea.fr>
+ * @link         https://github.com/Erwane/cakephp-contact
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace Contact\Test\TestCase\Database\Type;
 
+use Cake\Database\Driver;
+use Cake\Database\Type\JsonType;
 use Cake\TestSuite\TestCase;
 use Contact\Database\Type\PhoneNumberType;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * Test for the String type.
+ * PhoneNumberType tests.
  */
+#[UsesClass(PhoneNumberType::class)]
+#[CoversClass(PhoneNumberType::class)]
 class PhoneNumberTypeTest extends TestCase
 {
     /**
-     * @var \Cake\Database\Type\JsonType
+     * @var \Cake\Database\Type\JsonType|\Contact\Database\Type\PhoneNumberType
      */
-    public $type;
+    public JsonType|PhoneNumberType $type;
 
     /**
-     * @var \Cake\Database\Driver
+     * @var \Cake\Database\Driver|\PHPUnit\Framework\MockObject\MockObject
      */
-    public $driver;
+    public Driver|MockObject $driver;
 
     /**
      * Setup

@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace Contact\TestApp\Model\Entity;
 
+use Cake\ORM\Entity as CakeEntity;
 use Contact\Model\Entity\AddressTrait;
 
 /**
  * Class Entity
- *
- * @package Contact\TestApp\Model\Entity
  */
-class Entity extends \Cake\ORM\Entity
+class Entity extends CakeEntity
 {
     use AddressTrait;
 }

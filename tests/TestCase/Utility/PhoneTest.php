@@ -6,11 +6,14 @@ namespace Contact\Test\TestCase\Utility;
 use Cake\TestSuite\TestCase;
 use Contact\Utility\Phone;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
- * @uses \Contact\Utility\Phone
- * @coversDefaultClass \Contact\Utility\Phone
+ * Phone tests.
  */
+#[UsesClass(Phone::class)]
+#[CoversClass(Phone::class)]
 class PhoneTest extends TestCase
 {
     /**
@@ -40,7 +43,7 @@ class PhoneTest extends TestCase
         Phone::format('testing', ['format' => 'testing']);
     }
 
-    public function dataFormat(): array
+    public static function dataFormat(): array
     {
         return [
             // No options, international

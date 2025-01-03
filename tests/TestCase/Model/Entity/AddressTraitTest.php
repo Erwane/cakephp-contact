@@ -6,23 +6,26 @@ namespace Contact\Test\TestCase\Model\Entity;
 use Cake\Chronos\Chronos;
 use Cake\ORM\Entity as CakeEntity;
 use Cake\TestSuite\TestCase;
+use Contact\Model\Entity\AddressTrait;
 use Contact\TestApp\Model\Entity\Entity;
 use Contact\TestApp\Model\Entity\EntityCustom;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * Class AddressTraitTest
- *
- * @package Contact\Test\TestCase\Model\Entity
- * @coversDefaultClass \Contact\Model\Entity\AddressTrait
+ * AddressTrait tests.
  */
+#[UsesClass(AddressTrait::class)]
+#[CoversClass(AddressTrait::class)]
 class AddressTraitTest extends TestCase
 {
     /**
-     * @var \Contact\TestApp\Model\Entity\Entity|\PHPUnit\Framework\MockObject\MockObject
+     * @var \Contact\TestApp\Model\Entity\Entity|\PHPUnit\Framework\MockObject\MockObject|null
      */
-    private $entity;
+    private MockObject|Entity|null $entity;
 
-    private $data = [];
+    private array $data = [];
 
     protected function setUp(): void
     {

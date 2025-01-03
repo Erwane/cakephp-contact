@@ -20,9 +20,9 @@ use Cake\Utility\Text;
 trait AddressTrait
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
-    private $defaultAddressFields = [
+    private array $defaultAddressFields = [
         'organization' => 'organization',
         'street1' => 'street1',
         'street2' => 'street2',
@@ -39,15 +39,15 @@ trait AddressTrait
      *
      * @var string
      */
-    private $defaultAddressFormat = ":organization\n:street1\n:street2\n:postalCode :locality\n:country";
+    private string $defaultAddressFormat = ":organization\n:street1\n:street2\n:postalCode :locality\n:country";
 
-    private $currentAddressFields = [];
-    private $currentAddressFormat = '';
+    private array $currentAddressFields = [];
+    private string $currentAddressFormat = '';
 
     /**
      * @var array
      */
-    private $_addressContents = [
+    private array $_addressContents = [
         'organization' => '',
         'street1' => '',
         'street2' => '',
@@ -67,9 +67,9 @@ trait AddressTrait
     /**
      * Get address fields from current, entity $_addressFields or $defaultAddressFields
      *
-     * @return array|string[]
+     * @return array|array<string>
      */
-    protected function _getAddressFields()
+    protected function _getAddressFields(): array
     {
         if (!empty($this->currentAddressFields)) {
             return $this->currentAddressFields;
@@ -83,11 +83,11 @@ trait AddressTrait
     /**
      * Define which fields are formated
      *
-     * @param  array $fields Fields description
-     * @param  bool $merge Merge fields or not. True by default.
-     * @return self
+     * @param array $fields Fields description
+     * @param bool $merge Merge fields or not. True by default.
+     * @return $this
      */
-    public function setAddressFields(array $fields, bool $merge = true): self
+    public function setAddressFields(array $fields, bool $merge = true)
     {
         // Not empty
         if (!empty($fields)) {
@@ -111,7 +111,7 @@ trait AddressTrait
      *
      * @return string
      */
-    protected function _getAddressFormat()
+    protected function _getAddressFormat(): string
     {
         if (!empty($this->currentAddressFormat)) {
             return $this->currentAddressFormat;
@@ -125,12 +125,12 @@ trait AddressTrait
     /**
      * Set address format
      *
-     * @param  string|null $format Address format. Use colon (:) for name
-     * @return self
+     * @param string $format Address format. Use colon (:) for name
+     * @return $this
      */
     public function setAddressFormat(string $format)
     {
-        if (strpos($format, ':') !== false) {
+        if (str_contains($format, ':')) {
             $this->currentAddressFormat = $format;
         } else {
             $this->currentAddressFormat = $this->_getAddressFormat();
@@ -144,7 +144,7 @@ trait AddressTrait
      *
      * @return string
      */
-    protected function _getAddressText()
+    protected function _getAddressText(): string
     {
         return Text::insert($this->_getAddressFormat(), $this->address_full);
     }
@@ -162,7 +162,7 @@ trait AddressTrait
         // parse fieldsname to find address data
         foreach ($this->_getAddressFields() as $k => $field) {
             $value = null;
-            if (strpos($field, '.') !== false) {
+            if (str_contains($field, '.')) {
                 [$entity, $field] = explode('.', $field);
                 $association = Inflector::underscore(Inflector::singularize($entity));
                 if ($this->{$association} instanceof EntityInterface) {
