@@ -5,25 +5,9 @@
          colors="true"
          processIsolation="false"
          stopOnFailure="false">
-    <php>
-        <ini name="memory_limit" value="-1"/>
-        <ini name="apc.enable_cli" value="1"/>
-    </php>
-    <!-- Add any additional test suites you want to run here -->
     <testsuites>
-        <testsuite name="Test Cases">
-            <directory>tests/TestCase/</directory>
+        <testsuite name="all">
+            <directory>./tests</directory>
         </testsuite>
-        <!-- Add plugin test suites here. -->
     </testsuites>
-    <!-- Coverage -->
-    <source>
-        <include>
-            <directory suffix=".php">src/</directory>
-        </include>
-        <exclude>
-            <file>src/Application.php</file>
-            <file>src/Installer.php</file>
-        </exclude>
-    </source>
 </phpunit>
