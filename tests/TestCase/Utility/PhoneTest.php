@@ -16,30 +16,21 @@ use PHPUnit\Framework\Attributes\UsesClass;
 #[CoversClass(Phone::class)]
 class PhoneTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function noPhone()
+    public function testNoPhone()
     {
-        self::assertNull(Phone::format(null));
-        self::assertNull(Phone::format(''));
+        $this->assertNull(Phone::format(null));
+        $this->assertNull(Phone::format(''));
     }
 
-    /**
-     * @test
-     */
-    public function notPhoneNumber()
+    public function testNotPhoneNumber()
     {
-        self::assertSame('testing', Phone::format('testing'));
+        $this->assertSame('testing', Phone::format('testing'));
     }
 
-    /**
-     * @test
-     */
-    public function invalidFormat()
+    public function testInvalidFormat()
     {
-        self::expectException(InvalidArgumentException::class);
-        self::expectExceptionMessage('format should be short|uri|national|international');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('format should be short|uri|national|international');
         Phone::format('testing', ['format' => 'testing']);
     }
 
@@ -59,14 +50,9 @@ class PhoneTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @covers ::format
-     * @dataProvider dataFormat
-     */
     public function testPhoneFormatOptions($source, $options, $expected)
     {
         $phone = Phone::format($source, $options);
-        self::assertSame($expected, $phone);
+        $this->assertSame($expected, $phone);
     }
 }

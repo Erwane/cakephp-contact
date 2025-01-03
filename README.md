@@ -17,7 +17,6 @@ CakePHP-Contact is here to help you save, test and display all locality and cont
 ## Documentation
 
 - [Installation](#installing-with-composer)
-    - [Configuration](#configuration)
 - [Phone numbers](#phone-numbers)
     - [Utility](#utility)
     - [PhoneNumberType](#phonenumbertype)

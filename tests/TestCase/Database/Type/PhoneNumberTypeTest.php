@@ -1,15 +1,9 @@
 <?php
 declare(strict_types=1);
 
-/**
- * @copyright     Erwane BRETON <erwane@phea.fr>
- * @link         https://github.com/Erwane/cakephp-contact
- * @license       https://opensource.org/licenses/mit-license.php MIT License
- */
 namespace Contact\Test\TestCase\Database\Type;
 
 use Cake\Database\Driver;
-use Cake\Database\Type\JsonType;
 use Cake\TestSuite\TestCase;
 use Contact\Database\Type\PhoneNumberType;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -24,21 +18,16 @@ use PHPUnit\Framework\MockObject\MockObject;
 class PhoneNumberTypeTest extends TestCase
 {
     /**
-     * @var \Cake\Database\Type\JsonType|\Contact\Database\Type\PhoneNumberType
+     * @var \Contact\Database\Type\PhoneNumberType
      */
-    public JsonType|PhoneNumberType $type;
+    public PhoneNumberType $type;
 
     /**
      * @var \Cake\Database\Driver|\PHPUnit\Framework\MockObject\MockObject
      */
     public Driver|MockObject $driver;
 
-    /**
-     * Setup
-     *
-     * @return void
-     */
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->type = new PhoneNumberType();
@@ -47,42 +36,38 @@ class PhoneNumberTypeTest extends TestCase
 
     /**
      * Test converting to database format
-     *
-     * @test
      */
-    public function toDatabase()
+    public function testToDatabase()
     {
         // null
-        self::assertNull($this->type->toDatabase(null, $this->driver));
+        $this->assertNull($this->type->toDatabase(null, $this->driver));
 
         // Not phone number
-        self::assertSame('abc', $this->type->toDatabase('abc', $this->driver));
+        $this->assertSame('abc', $this->type->toDatabase('abc', $this->driver));
 
         // format with default country
-        self::assertSame('+33123456789', $this->type->toDatabase('01.23.45.67.89', $this->driver));
+        $this->assertSame('+33123456789', $this->type->toDatabase('01.23.45.67.89', $this->driver));
 
         // default is GB
         $this->type->setDefaultCountry('GB');
-        self::assertSame('+442012345678', $this->type->toDatabase('020 1234 5678', $this->driver));
+        $this->assertSame('+442012345678', $this->type->toDatabase('020 1234 5678', $this->driver));
     }
 
     /**
      * Test converting to php format
-     *
-     * @test
      */
-    public function toPhp()
+    public function testToPhp()
     {
-        self::assertNull($this->type->toPhp(null, $this->driver));
+        $this->assertNull($this->type->toPHP(null, $this->driver));
 
         // Already format
-        self::assertSame('+33123456789', $this->type->toPhp('+33123456789', $this->driver));
+        $this->assertSame('+33123456789', $this->type->toPHP('+33123456789', $this->driver));
 
         // Format to default country
-        self::assertSame('+33123456789', $this->type->toPhp('01.23.45.67.89', $this->driver));
+        $this->assertSame('+33123456789', $this->type->toPHP('01.23.45.67.89', $this->driver));
 
         // default is GB
         $this->type->setDefaultCountry('GB');
-        self::assertSame('+442012345678', $this->type->toPhp('020 1234 5678', $this->driver));
+        $this->assertSame('+442012345678', $this->type->toPHP('020 1234 5678', $this->driver));
     }
 }

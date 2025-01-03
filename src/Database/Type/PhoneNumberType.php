@@ -1,6 +1,18 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * CakePHP Contact
+ * Copyright (c) Erwane BRETON
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright   Copyright (c) Erwane BRETON
+ * @see         https://github.com/Erwane/cakephp-contact
+ * @license     https://opensource.org/licenses/mit-license.php MIT License
+ */
 namespace Contact\Database\Type;
 
 use Cake\Database\Driver;
@@ -11,14 +23,12 @@ use libphonenumber\PhoneNumberUtil;
 
 /**
  * Class PhoneNumberType
- *
- * @package Contact\Database\Type
  */
 class PhoneNumberType extends StringType
 {
     /**
      * Set the default country of input forms
-     * If phone number was write without countrycode (+33)
+     * If phone number was write without countryCode (+33)
      * this default country code will be used
      *
      * @var string
@@ -26,9 +36,9 @@ class PhoneNumberType extends StringType
     protected string $defaultCountry = 'FR';
 
     /**
-     * Set defaut country type
+     * Set default country type
      *
-     * @param string $countryCode New defaut country code.
+     * @param string $countryCode New default country code.
      * @return $this
      * @see https://en.wikipedia.org/wiki/List_of_country_calling_codes
      */
@@ -93,7 +103,7 @@ class PhoneNumberType extends StringType
                 $phone = $instance->parse($value, $this->defaultCountry);
 
                 return $instance->format($phone, PhoneNumberFormat::E164);
-            } catch (Exception $e) {
+            } catch (Exception) {
                 return $value;
             }
         }

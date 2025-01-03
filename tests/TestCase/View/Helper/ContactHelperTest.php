@@ -30,12 +30,9 @@ class ContactHelperTest extends TestCase
         $this->helper = null;
     }
 
-    /**
-     * @test
-     */
-    public function phone()
+    public function testPhone()
     {
         $output = $this->helper->phone('07-795-841-283', ['country' => 'GB', 'format' => 'short']);
-        self::assertSame('+447795841283', $output);
+        $this->assertSame('+447795841283', $output);
     }
 }
