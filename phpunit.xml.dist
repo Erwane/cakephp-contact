@@ -1,31 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
          colors="true"
          processIsolation="false"
-         stopOnFailure="false"
-         bootstrap="tests/bootstrap.php"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-    <php>
-        <ini name="memory_limit" value="-1"/>
-        <ini name="apc.enable_cli" value="1"/>
-    </php>
-
-    <!-- Add any additional test suites you want to run here -->
+         stopOnFailure="false">
     <testsuites>
-        <testsuite name="CakePHP 4 Contact Test Cases">
-            <directory>tests/TestCase/</directory>
+        <testsuite name="all">
+            <directory>./tests</directory>
         </testsuite>
-        <!-- Add plugin test suites here. -->
     </testsuites>
-
-    <!-- Coverage -->
-    <coverage>
-        <include>
-            <directory suffix=".php">src/</directory>
-        </include>
-        <exclude>
-            <file>src/Application.php</file>
-            <file>src/Installer.php</file>
-        </exclude>
-    </coverage>
 </phpunit>

@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use Cake\Database\Type;
-use Contact\Database\Type\PhoneNumberType;
+use Cake\Database\TypeFactory;
 
-Type::map('phonenumber', PhoneNumberType::class);
+TypeFactory::build('phonenumber');

@@ -6,41 +6,35 @@ namespace Contact\Test\TestCase\Utility;
 use Cake\TestSuite\TestCase;
 use Contact\Utility\Phone;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
- * @uses \Contact\Utility\Phone
- * @coversDefaultClass \Contact\Utility\Phone
+ * Phone tests.
  */
+#[UsesClass(Phone::class)]
+#[CoversClass(Phone::class)]
 class PhoneTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function noPhone()
+    public function testNoPhone()
     {
-        self::assertNull(Phone::format(null));
-        self::assertNull(Phone::format(''));
+        $this->assertNull(Phone::format(null));
+        $this->assertNull(Phone::format(''));
     }
 
-    /**
-     * @test
-     */
-    public function notPhoneNumber()
+    public function testNotPhoneNumber()
     {
-        self::assertSame('testing', Phone::format('testing'));
+        $this->assertSame('testing', Phone::format('testing'));
     }
 
-    /**
-     * @test
-     */
-    public function invalidFormat()
+    public function testInvalidFormat()
     {
-        self::expectException(InvalidArgumentException::class);
-        self::expectExceptionMessage('format should be short|uri|national|international');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('format should be short|uri|national|international');
         Phone::format('testing', ['format' => 'testing']);
     }
 
-    public function dataFormat(): array
+    public static function dataFormat(): array
     {
         return [
             // No options, international
@@ -56,14 +50,9 @@ class PhoneTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @covers ::format
-     * @dataProvider dataFormat
-     */
     public function testPhoneFormatOptions($source, $options, $expected)
     {
         $phone = Phone::format($source, $options);
-        self::assertSame($expected, $phone);
+        $this->assertSame($expected, $phone);
     }
 }

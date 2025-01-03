@@ -3,18 +3,17 @@ declare(strict_types=1);
 
 namespace Contact\TestApp\Model\Entity;
 
+use Cake\ORM\Entity;
 use Contact\Model\Entity\AddressTrait;
 
 /**
  * Class EntityCustom
- *
- * @package Contact\TestApp\Model\Entity
  */
-class EntityCustom extends \Cake\ORM\Entity
+class EntityCustom extends Entity
 {
     use AddressTrait;
 
-    protected $_addressFields = [
+    protected array $_addressFields = [
         'organization' => 'NomSociete',
         'street1' => 'AdresseSociete',
         'street2' => 'ComplementAdresse',
@@ -24,5 +23,5 @@ class EntityCustom extends \Cake\ORM\Entity
         'country' => 'Pays',
     ];
 
-    protected $_addressFormat = ":street1 :street2\n:locality :postalCode\n:region :country";
+    protected string $_addressFormat = ":street1 :street2\n:locality :postalCode\n:region :country";
 }

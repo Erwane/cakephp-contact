@@ -1,6 +1,18 @@
 <?php
 declare(strict_types=1);
 
+/**
+ * CakePHP Contact
+ * Copyright (c) Erwane BRETON
+ *
+ * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright   Copyright (c) Erwane BRETON
+ * @see         https://github.com/Erwane/cakephp-contact
+ * @license     https://opensource.org/licenses/mit-license.php MIT License
+ */
 namespace Contact\Utility;
 
 use InvalidArgumentException;
@@ -9,12 +21,10 @@ use libphonenumber\PhoneNumberUtil;
 
 /**
  * Class Phone
- *
- * @package Contact\Utility
  */
 class Phone
 {
-    protected static $_formats = [
+    protected static array $_formats = [
         'international' => PhoneNumberFormat::INTERNATIONAL,
         'national' => PhoneNumberFormat::NATIONAL,
         'uri' => PhoneNumberFormat::RFC3966,
@@ -24,8 +34,8 @@ class Phone
     /**
      * format phone number :
      *
-     * @param  string|null $text phone number
-     * @param  array $options [ 'country' => 'FR', 'format' => 'international', ]
+     * @param string|null $text phone number
+     * @param array $options [ 'country' => 'FR', 'format' => 'international', ]
      * @return string|null Formated phone number
      * @throws \libphonenumber\NumberParseException
      */
