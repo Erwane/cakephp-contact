@@ -50,6 +50,9 @@ class PhoneTest extends TestCase
         ];
     }
 
+    /**
+     * @dataProvider dataFormat
+     */
     public function testPhoneFormatOptions($source, $options, $expected)
     {
         $phone = Phone::format($source, $options);
