@@ -1,7 +1,7 @@
 # CakePHP 5.x plugin to manipulate contact data
 
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![codecov](https://codecov.io/github/Erwane/cakephp-contact/branch/3.x/graph/badge.svg?token=cDRzzPqopA)](https://codecov.io/github/Erwane/cakephp-contact)
+[![codecov](https://codecov.io/github/Erwane/cakephp-contact/graph/badge.svg?token=cDRzzPqopA)](https://codecov.io/github/Erwane/cakephp-contact)
 ![Packagist Downloads](https://img.shields.io/packagist/dt/Erwane/cakephp-contact)
 ![Packagist Version](https://img.shields.io/packagist/v/Erwane/cakephp-contact)
 
