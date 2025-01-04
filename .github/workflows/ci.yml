@@ -41,7 +41,7 @@ jobs:
       env:
         XDEBUG_MODE: coverage
       run: |
-        if [[ ${{ matrix.php-version }} == '8.1' ]]; then
+        if [[ '${{ matrix.php-version }}' == '8.1' ]]; then
           export CODECOVERAGE=1
           vendor/bin/phpunit --display-warnings --display-incomplete --coverage-clover=coverage.xml
         else

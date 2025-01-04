@@ -7,6 +7,7 @@ use Cake\TestSuite\TestCase;
 use Contact\Utility\Phone;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\UsesClass;
 
 /**
@@ -50,9 +51,7 @@ class PhoneTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataFormat
-     */
+    #[dataProvider('dataFormat')]
     public function testPhoneFormatOptions($source, $options, $expected)
     {
         $phone = Phone::format($source, $options);
