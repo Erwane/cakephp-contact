@@ -20,6 +20,6 @@ use Cake\Core\BasePlugin;
 /**
  * CakePHP 5 contact plugin.
  */
-class Plugin extends BasePlugin
+class ContactPlugin extends BasePlugin
 {
 }

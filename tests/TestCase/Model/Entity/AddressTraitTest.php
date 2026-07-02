@@ -145,11 +145,11 @@ class AddressTraitTest extends TestCase
 
     public function testGetAddressText()
     {
-        $this->entity->set($this->data);
+        $this->entity->patch($this->data);
 
         $this->assertEquals(
             "Erwane Breton\n123 rue de la liberté\nArrière cours\n01234 St Jean des corbières\nFrance",
-            $this->entity->address_text
+            $this->entity->address_text,
         );
     }
 
@@ -167,20 +167,20 @@ class AddressTraitTest extends TestCase
 
         $this->assertEquals(
             "123 rue de la liberté Arrière cours\nSeattle 01234\nWA USA",
-            $entity->address_text
+            $entity->address_text,
         );
     }
 
     public function testGetAddressFullObject()
     {
-        $this->entity->set(['organization' => Chronos::parse('2021-01-26 12:34:56')]);
+        $this->entity->patch(['organization' => Chronos::parse('2021-01-26 12:34:56')]);
         $this->assertSame('2021-01-26 12:34:56', $this->entity->address_full['organization']);
     }
 
     public function testGetAddressFullArray()
     {
         $organization = ['title' => 'testing'];
-        $this->entity->set(['organization' => $organization]);
+        $this->entity->patch(['organization' => $organization]);
         $this->assertJson($this->entity->address_full['organization']);
     }
 }
