@@ -63,7 +63,7 @@ public function bootstrap(): void
 {
     // Load Contact plugin
     try {
-        $this->addPlugin(\Contact\Plugin::class);
+        $this->addPlugin(\Contact\ContactPlugin::class);
     } catch (MissingPluginException $e) {
         debug($e->getMessage());
     }
